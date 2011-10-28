@@ -15,7 +15,7 @@ public class MemCell {
 	}
 	
 	public boolean[] getBits() {
-		return bits;
+		return bits.clone();
 	}
 	
 	public void setBits(boolean[] bits) throws Exception {
