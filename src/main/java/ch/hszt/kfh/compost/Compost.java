@@ -2,6 +2,8 @@ package ch.hszt.kfh.compost;
 
 import java.util.HashMap;
 
+import ch.hszt.kfh.compost.operations.*;
+
 public class Compost {
 	
 	public static final int MEM_SIZE = 1024;
@@ -15,6 +17,8 @@ public class Compost {
 	private MemCell[] memory = new MemCell[MEM_SIZE];
 	
 	private int instructionPointer = ENTRY_POINT;
+	
+	private Decoder decoder = new Decoder();
 		
 	public Compost() {
 		// create registers
@@ -27,6 +31,12 @@ public class Compost {
 		for (int i = 0; i < memory.length; i++) {
 			memory[i] = new MemCell(8);
 		}
+		// register operations
+		decoder.register(new CLR());
+		decoder.register(new ADD());
+		decoder.register(new ADDD());
+		decoder.register(new INC());
+		decoder.register(new DEC());
 	}
 	
 	public MemCell getRegister(RegisterId id) {

@@ -31,7 +31,7 @@ public abstract class Operation {
 		return stringToInstrBitArray(opCodeString(), 'x', true);
 	}
 	
-	protected MemCell getRegister(Compost compost, boolean[] id) throws Exception {
+	protected MemCell getRegister(Compost compost, boolean[] id) {
 		if (id.length == 2) {
 			if (!id[0] && !id[1]) {
 				return compost.getRegister(RegisterId.ACCUM);
@@ -46,7 +46,7 @@ public abstract class Operation {
 				return compost.getRegister(RegisterId.REG_3);
 			}
 		}
-		throw new Exception("Not implemented.");
+		return null;
 	}
 	
 }
