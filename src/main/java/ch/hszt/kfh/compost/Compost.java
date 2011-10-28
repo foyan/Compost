@@ -4,6 +4,10 @@ import java.util.HashMap;
 
 public class Compost {
 	
+	public static final int MEM_SIZE = 1024;
+	public static final int ENTRY_POINT = 100;
+	public static final int INSTR_SIZE = 16;
+
 	private HashMap<RegisterId, MemCell> registers = new HashMap<RegisterId, MemCell>();
 	
 	private boolean carryBit;
@@ -11,11 +15,7 @@ public class Compost {
 	private MemCell[] memory = new MemCell[MEM_SIZE];
 	
 	private int instructionPointer = ENTRY_POINT;
-	
-	public static final int MEM_SIZE = 1024;
-	public static final int ENTRY_POINT = 100;
-	public static final int INSTR_SIZE = 16;
-	
+		
 	public Compost() {
 		// create registers
 		registers.put(RegisterId.INSTR, new MemCell(INSTR_SIZE));

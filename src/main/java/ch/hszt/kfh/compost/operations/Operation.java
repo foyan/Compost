@@ -12,20 +12,23 @@ public abstract class Operation {
 	
 	public abstract void exec(Compost compost, boolean[] argument) throws Exception;
 
-	private static boolean[] stringToInstrBitArray(String s, char magicChar) {
+	private static boolean[] stringToInstrBitArray(String s, char magicChar, boolean not) {
 		boolean[] arr = new boolean[Compost.INSTR_SIZE];
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = s.charAt(i) == magicChar;
+			if (not) {
+				arr[i] = !arr[i];
+			}
 		}
 		return arr;
 	}
 	
 	public boolean[] opCode() {
-		return stringToInstrBitArray(opCodeString(), '1');
+		return stringToInstrBitArray(opCodeString(), '1', false);
 	}
 	
 	public boolean[] opCodeMask() {
-		return stringToInstrBitArray(opCodeString(), 'x');
+		return stringToInstrBitArray(opCodeString(), 'x', true);
 	}
 	
 	protected MemCell getRegister(Compost compost, boolean[] id) throws Exception {
