@@ -8,11 +8,17 @@ public class Compost {
 	
 	private boolean carryBit;
 	
-	private MemCell[] memory = new MemCell[1024];
+	private MemCell[] memory = new MemCell[MEM_SIZE];
+	
+	private int instructionPointer = ENTRY_POINT;
+	
+	public static final int MEM_SIZE = 1024;
+	public static final int ENTRY_POINT = 100;
+	public static final int INSTR_SIZE = 16;
 	
 	public Compost() {
 		// create registers
-		registers.put(RegisterId.INSTR, new MemCell(16));
+		registers.put(RegisterId.INSTR, new MemCell(INSTR_SIZE));
 		registers.put(RegisterId.ACCUM, new MemCell(16));
 		registers.put(RegisterId.REG_1, new MemCell(16));
 		registers.put(RegisterId.REG_2, new MemCell(16));
@@ -37,6 +43,18 @@ public class Compost {
 	
 	public MemCell getMem(int address) {
 		return memory[address];
+	}
+	
+	public int getInstructionPointer() {
+		return instructionPointer;
+	}
+	
+	public void jumpRelative(int delta) {
+		instructionPointer += delta;
+	}
+	
+	public void jumpAbsolute(int address) {
+		instructionPointer = address;
 	}
 	
 }
