@@ -6,15 +6,17 @@ import ch.hszt.kfh.compost.operations.*;
 
 public class Compost {
 	
-	public static final int MEM_SIZE = 1024;
 	public static final int ENTRY_POINT = 100;
 	public static final int INSTR_SIZE = 16;
-
+	public static final int REG_SIZE = 16;
+	public static final int MEM_SIZE = 8;
+	public static final int TOTAL_MEM = 1024;
+	
 	private HashMap<RegisterId, MemCell> registers = new HashMap<RegisterId, MemCell>();
 	
 	private boolean carryBit;
 	
-	private MemCell[] memory = new MemCell[MEM_SIZE];
+	private MemCell[] memory = new MemCell[TOTAL_MEM];
 	
 	private int instructionPointer = ENTRY_POINT;
 	
@@ -23,13 +25,13 @@ public class Compost {
 	public Compost() {
 		// create registers
 		registers.put(RegisterId.INSTR, new MemCell(INSTR_SIZE));
-		registers.put(RegisterId.ACCUM, new MemCell(16));
-		registers.put(RegisterId.REG_1, new MemCell(16));
-		registers.put(RegisterId.REG_2, new MemCell(16));
-		registers.put(RegisterId.REG_3, new MemCell(16));
+		registers.put(RegisterId.ACCUM, new MemCell(REG_SIZE));
+		registers.put(RegisterId.REG_1, new MemCell(REG_SIZE));
+		registers.put(RegisterId.REG_2, new MemCell(REG_SIZE));
+		registers.put(RegisterId.REG_3, new MemCell(REG_SIZE));
 		// initialize memory
 		for (int i = 0; i < memory.length; i++) {
-			memory[i] = new MemCell(8);
+			memory[i] = new MemCell(MEM_SIZE);
 		}
 		// register operations
 		decoder.register(new CLR());

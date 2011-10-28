@@ -28,20 +28,20 @@ public class Tools {
 			}
 		}
 		// ... Potenzieren...
+		return fromBinary(data) * (negative ? -1 : 1);
+	}
+	
+	public static int fromBinary(boolean[] data) {
 		int n = 0;
 		for (int i = 0; i < data.length; i++) {
 			if (data[data.length - 1 - i]) {
 				n += Math.pow(2, i);
 			}
 		}
-		return n * (negative ? -1 : 1);
+		return n;
 	}
 	
-	public static boolean[] toComplement(int n, int size) {
-		boolean negative = n < 0;
-		if (negative) {
-			n = -n;
-		}
+	public static boolean[] toBinary(int n, int size) {
 		boolean[] b = new boolean[size];
 		int i = 0;
 		while (true) {
@@ -53,6 +53,15 @@ public class Tools {
 				break;
 			}
 		}
+		return b;
+	}
+	
+	public static boolean[] toComplement(int n, int size) {
+		boolean negative = n < 0;
+		if (negative) {
+			n = -n;
+		}
+		boolean[] b = toBinary(n, size);
 		if (negative) {
 			for (int j = 0; j < size; j++) {
 				b[j] = !b[j];
