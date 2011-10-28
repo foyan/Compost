@@ -1,4 +1,4 @@
-package ch.hszt.kfh.compost.Operations;
+package ch.hszt.kfh.compost.operations;
 
 import ch.hszt.kfh.compost.*;
 
