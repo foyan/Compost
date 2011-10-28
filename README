@@ -1,0 +1,18 @@
+Compost.
+
+Aufgesetzt als Maven-Projekt - am besten in Eclipse  mit dem 
+M2Eclipse-Plugin als "Existing Maven Project" importieren.
+
+main-Methode gibts noch keine, die Tests können entweder
+direkt in Eclipse oder mit "mvn test" gestartet werden.
+
+Vorläufig funktionieren:
+* Alle Arten der Addition
+* CLR
+* Speicher auslesen
+* Dekodierung des Befehlsregisters (buggy, Test Coverage lausig)
+
+Wichtige Dinge, die noch nicht funktionieren:
+* Anstossen der Befehle
+* Speicher schreiben
+* Ausgabe
