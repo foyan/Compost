@@ -1,13 +1,27 @@
 package ch.hszt.kfh.compost;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import ch.hszt.kfh.compost.ui.ManualObservable;
+
 public class MemCell {
 	
 	private int size;
 	private boolean[] bits;
+	private int address;
 	
 	public MemCell(int size) {
 		this.size = size;
 		bits = new boolean[size];
+	}
+	
+	public int getAddress() {
+		return address;
+	}
+	
+	public void setAddress(int address) {
+		this.address = address;
 	}
 	
 	public int getSize() {
@@ -23,6 +37,7 @@ public class MemCell {
 			throw new Exception("Size does not match.");
 		}
 		this.bits = bits;
+		notifyChangeObservers();
 	}
 	
 	public boolean getBit(int index) {
@@ -31,10 +46,22 @@ public class MemCell {
 	
 	public void setBit(int index, boolean bit) {
 		bits[index] = bit;
+		notifyChangeObservers();
 	}
 	
 	public void clear() {
 		bits = new boolean[size];
+		notifyChangeObservers();
+	}
+	
+	private static ManualObservable changeObservable = new ManualObservable();
+	
+	public static void addChangeObserver(Observer observer) {
+		changeObservable.addObserver(observer);
+	}
+	
+	protected void notifyChangeObservers() {
+		changeObservable.notifyObservers(this);
 	}
 
 }

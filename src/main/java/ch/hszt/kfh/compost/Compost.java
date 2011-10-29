@@ -40,6 +40,7 @@ public class Compost {
 		// initialize memory
 		for (int i = 0; i < memory.length; i++) {
 			memory[i] = new MemCell(MEM_SIZE);
+			memory[i].setAddress(i);
 		}
 		// register operations
 		decoder.register(new CLR());
