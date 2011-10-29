@@ -83,5 +83,16 @@ public class Tools {
 		}
 		return b;
 	}
+	
+	public static String fromBooleanArray(boolean[] b, boolean makeByteGap) {
+		String s = "";
+		for (int i = 0; i < b.length; i++) {
+			s += b[i] ? "1" : "0";
+			if (makeByteGap && (i+1) % 8 == 0 && i != b.length - 1) {
+				s += " ";
+			}
+		}
+		return s;
+	}
 
 }

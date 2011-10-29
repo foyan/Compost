@@ -1,8 +1,16 @@
 package ch.hszt.kfh.compost;
 
 import java.util.HashMap;
+import java.util.Set;
 
-import ch.hszt.kfh.compost.operations.*;
+import ch.hszt.kfh.compost.operations.ADD;
+import ch.hszt.kfh.compost.operations.ADDD;
+import ch.hszt.kfh.compost.operations.CLR;
+import ch.hszt.kfh.compost.operations.DEC;
+import ch.hszt.kfh.compost.operations.INC;
+import ch.hszt.kfh.compost.operations.LWDD;
+import ch.hszt.kfh.compost.operations.Operation;
+import ch.hszt.kfh.compost.operations.SWDD;
 
 public class Compost {
 	
@@ -39,6 +47,12 @@ public class Compost {
 		decoder.register(new ADDD());
 		decoder.register(new INC());
 		decoder.register(new DEC());
+		decoder.register(new LWDD());
+		decoder.register(new SWDD());
+	}
+	
+	public Set<RegisterId> getRegisterIds() {
+		return registers.keySet();
 	}
 	
 	public MemCell getRegister(RegisterId id) {
@@ -61,12 +75,42 @@ public class Compost {
 		return instructionPointer;
 	}
 	
+	public void setInstructionPointer(int instructionPointer) {
+		this.instructionPointer = instructionPointer;
+	}
+	
 	public void jumpRelative(int delta) {
 		instructionPointer += delta;
 	}
 	
 	public void jumpAbsolute(int address) {
 		instructionPointer = address;
+	}
+	
+	public void clear() {
+		setCarryBit(false);
+		for (RegisterId regId : getRegisterIds()) {
+			getRegister(regId).clear();
+		}
+		setInstructionPointer(ENTRY_POINT);
+		for (int i = 0; i < TOTAL_MEM; i++) {
+			getMem(i).clear();
+		}
+	}
+	
+	public void initOperation(int address, String mnemonic) throws Exception {
+		Operation op = decoder.getOperation(mnemonic);
+		if (op == null) {
+			throw new Exception("Unsupported operation: " + mnemonic);
+		}
+		MemCell msb = getMem(address);
+		MemCell lsb = getMem(address + 1);
+		
+		boolean[] opCode = op.opCode();
+		for (int i = 0; i < msb.getSize(); i++) {
+			msb.setBit(i, opCode[i]);
+			lsb.setBit(i, opCode[i + msb.getSize()]);
+		}
 	}
 	
 }

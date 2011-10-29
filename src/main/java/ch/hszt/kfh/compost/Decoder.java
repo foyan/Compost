@@ -53,6 +53,15 @@ public class Decoder {
 		}
 	}
 	
+	public Operation getOperation(String mnemonic) {
+		for (Operation op : operations) {
+			if (op.mnemonic().equals(mnemonic)) {
+				return op;
+			}
+		}
+		return null;
+	}
+	
 	public Operation getCurrentOperation() {
 		return currentOperation;
 	}

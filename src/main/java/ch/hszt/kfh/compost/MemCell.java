@@ -32,5 +32,9 @@ public class MemCell {
 	public void setBit(int index, boolean bit) {
 		bits[index] = bit;
 	}
+	
+	public void clear() {
+		bits = new boolean[size];
+	}
 
 }
