@@ -51,6 +51,17 @@ public class Program {
 		}
 	};
 	
+	private ActionListener step = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			try {
+				compost.oneOperation();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.toString());
+			}
+		}
+	};
+	
 		
 	public ActionListener getShowRegisters() {
 		return showRegisters;
@@ -72,11 +83,16 @@ public class Program {
 				parser.setCompost(compost);
 				try {
 					parser.parse();
+					compost.getCycleStartedObservable().notifyObservers();
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e.toString());
 				}
 			}
 		};
+	}
+	
+	public ActionListener getStep() {
+		return step;
 	}
 
 }

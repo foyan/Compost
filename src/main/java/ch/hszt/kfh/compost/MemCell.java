@@ -1,6 +1,6 @@
 package ch.hszt.kfh.compost;
 
-import java.util.Observer;
+import java.util.Observable;
 
 import ch.hszt.kfh.compost.ui.ManualObservable;
 
@@ -8,7 +8,7 @@ public class MemCell {
 	
 	private int size;
 	private boolean[] bits;
-	private int address;
+	private int address = -1;
 	
 	public MemCell(int size) {
 		this.size = size;
@@ -54,13 +54,13 @@ public class MemCell {
 	}
 	
 	private static ManualObservable changeObservable = new ManualObservable();
-	
-	public static void addChangeObserver(Observer observer) {
-		changeObservable.addObserver(observer);
-	}
-	
+		
 	protected void notifyChangeObservers() {
 		changeObservable.notifyObservers(this);
+	}
+	
+	public static Observable getChangeObservable() {
+		return changeObservable;
 	}
 
 }

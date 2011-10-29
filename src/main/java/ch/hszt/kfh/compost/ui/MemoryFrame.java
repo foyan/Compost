@@ -1,8 +1,12 @@
 package ch.hszt.kfh.compost.ui;
 
+import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class MemoryFrame extends JFrame {
 	
@@ -13,29 +17,38 @@ public class MemoryFrame extends JFrame {
 		setTitle("Memory");
 		setBounds(0, 0, 800, 800);
 		
+		final MemoryTableModel model = new MemoryTableModel();
 		JTable table = new JTable();
-		table.setModel(new MemoryTableModel());
+		table.setModel(model);
 		JScrollPane scroll = new JScrollPane(table);
 		
 		getContentPane().add(scroll);
 		
-		/*
-		getContentPane().setLayout(new GridLayout(0, 5));
-		
-		getContentPane().add(new JLabel(""));
-		
-		getContentPane().add(new JLabel("+ 0 1"));
-		getContentPane().add(new JLabel("+ 2 3"));
-		getContentPane().add(new JLabel("+ 4 5"));
-		getContentPane().add(new JLabel("+ 6 7"));
-		
-		for (int i = 0; i < Compost.TOTAL_MEM; i++) {
-			if (i % 4 == 0) {
-				getContentPane().add(new JLabel(i + ""));
-			}
-			getContentPane().add(new MemCellField(Program.instance().getCompost().getMem(i)));
-		}
-		*/
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+ 			private static final long serialVersionUID = 1L;
+
+			@Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+ 
+                Component c = super.getTableCellRendererComponent(table, value,
+                        isSelected, hasFocus, row, column);
+ 
+                if (model.isCurrentInstructionCell(row, column)) {
+                    c.setBackground(Color.BLUE);
+                    c.setForeground(Color.WHITE);
+                } else if (model.isCurrentCellWritten(row, column)) {
+                	c.setBackground(Color.RED);
+                	c.setForeground(Color.WHITE);
+                } else {
+                    c.setBackground(Color.WHITE);
+                    c.setForeground(Color.BLACK);
+                }
+                return c;
+            }
+        });
+ 
 		
 	}
 

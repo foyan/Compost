@@ -1,5 +1,6 @@
 package ch.hszt.kfh.compost.ui;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,8 +14,15 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	
+	private int instructionPointer = -1;
+
+	private ArrayList<Integer> cellsWritten = new ArrayList<Integer>();
+	private ArrayList<Integer> cellsRead = new ArrayList<Integer>();
+	
 	public MemoryTableModel() {
-		MemCell.addChangeObserver(this);
+		MemCell.getChangeObservable().addObserver(this);
+		Program.instance().getCompost().getInstructionPointerChangedObservable().addObserver(this);
+		Program.instance().getCompost().getCycleStartedObservable().addObserver(this);
 	}
 
 	@Override
@@ -47,10 +55,49 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		MemCell memCell = (MemCell) arg1;
-		int row = memCell.getAddress() / 4 / 2;
-		int col = (memCell.getAddress() % 8) / 2 + 1;
+		if (arg0 == MemCell.getChangeObservable()) {
+			MemCell memCell = (MemCell) arg1;
+			cellsWritten.add(memCell.getAddress());
+			fireTableCellUpdated(memCell.getAddress());
+			return;
+		}
+		if (arg0 == Program.instance().getCompost().getInstructionPointerChangedObservable()) {
+			fireTableCellUpdated(instructionPointer);
+			instructionPointer = Program.instance().getCompost().getInstructionPointer();
+			fireTableCellUpdated(instructionPointer);
+			return;
+		}
+		if (arg0 == Program.instance().getCompost().getCycleStartedObservable()) {
+			ArrayList<Integer> w = new ArrayList<Integer>(cellsWritten);
+			ArrayList<Integer> r = new ArrayList<Integer>(cellsRead);
+			cellsWritten.clear();
+			cellsRead.clear();
+			for (int i : w) {
+				fireTableCellUpdated(i);
+			}
+			for (int i : r) {
+				fireTableCellUpdated(i);
+			}
+			int ip = instructionPointer;
+			instructionPointer = -1;
+			fireTableCellUpdated(ip);
+			return;
+		}
+	}
+	
+	private void fireTableCellUpdated(int address) {
+		int row = address / 4 / 2;
+		int col = (address % 8) / 2 + 1;
 		fireTableCellUpdated(row, col);
+	}
+	
+	public boolean isCurrentInstructionCell(int row, int col) {
+		int address = row * 4 * 2 + (col - 1) * 2;
+		return address == Program.instance().getCompost().getInstructionPointer();
+	}
+	public boolean isCurrentCellWritten(int row, int col) {
+		int address = row * 4 * 2 + (col - 1) * 2;
+		return cellsWritten.contains(address);
 	}
 
 }

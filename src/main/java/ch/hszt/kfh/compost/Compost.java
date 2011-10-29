@@ -2,6 +2,7 @@ package ch.hszt.kfh.compost;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
 import java.util.Set;
 
 import ch.hszt.kfh.compost.operations.ADD;
@@ -12,6 +13,7 @@ import ch.hszt.kfh.compost.operations.INC;
 import ch.hszt.kfh.compost.operations.LWDD;
 import ch.hszt.kfh.compost.operations.Operation;
 import ch.hszt.kfh.compost.operations.SWDD;
+import ch.hszt.kfh.compost.ui.ManualObservable;
 
 public class Compost {
 	
@@ -30,6 +32,9 @@ public class Compost {
 	private int instructionPointer = ENTRY_POINT;
 	
 	private Decoder decoder = new Decoder();
+	
+	private ManualObservable instructionPointerChangedObservable = new ManualObservable();
+	private ManualObservable cycleStartedObservable = new ManualObservable();
 		
 	public Compost() {
 		// create registers
@@ -51,6 +56,7 @@ public class Compost {
 		decoder.register(new DEC());
 		decoder.register(new LWDD());
 		decoder.register(new SWDD());
+		setInstructionPointer(ENTRY_POINT);
 	}
 	
 	public Set<RegisterId> getRegisterIds() {
@@ -79,6 +85,7 @@ public class Compost {
 	
 	public void setInstructionPointer(int instructionPointer) {
 		this.instructionPointer = instructionPointer;
+		instructionPointerChangedObservable.notifyObservers();
 	}
 	
 	public void jumpRelative(int delta) {
@@ -94,10 +101,11 @@ public class Compost {
 		for (RegisterId regId : getRegisterIds()) {
 			getRegister(regId).clear();
 		}
-		setInstructionPointer(ENTRY_POINT);
 		for (int i = 0; i < TOTAL_MEM; i++) {
 			getMem(i).clear();
 		}
+		cycleStartedObservable.notifyObservers();
+		setInstructionPointer(ENTRY_POINT);
 	}
 	
 	public void initOperation(int address, String mnemonic, List<String> arguments) throws Exception {
@@ -115,5 +123,32 @@ public class Compost {
 			lsb.setBit(i, opCode[i + msb.getSize()]);
 		}
 	}
+	
+	public void oneOperation() throws Exception {
+		cycleStartedObservable.notifyObservers();
+		transferInstruction();
+		decoder.decode(getRegister(RegisterId.INSTR));
+		if (decoder.getCurrentOperation() != null) {
+			decoder.getCurrentOperation().exec(this, decoder.getCurrentArgument());
+			setInstructionPointer(instructionPointer + INSTR_SIZE / 8);
+		}
+	}
 		
+	private void transferInstruction() {
+		boolean[] cell1 = getMem(instructionPointer).getBits();
+		boolean[] cell2 = getMem(instructionPointer + 1).getBits();
+		MemCell reg = getRegister(RegisterId.INSTR);
+		for (int i = 0; i < cell1.length; i++) {
+			reg.setBit(i, cell1[i]);
+			reg.setBit(cell1.length + i, cell2[i]);
+		}
+	}
+	
+	public Observable getInstructionPointerChangedObservable() {
+		return instructionPointerChangedObservable;
+	}
+	public Observable getCycleStartedObservable() {
+		return cycleStartedObservable;
+	}
+	
 }
