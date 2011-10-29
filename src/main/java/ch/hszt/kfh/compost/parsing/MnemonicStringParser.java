@@ -1,5 +1,7 @@
 package ch.hszt.kfh.compost.parsing;
 
+import java.util.ArrayList;
+
 public class MnemonicStringParser extends CompostParser {
 	
 	private String string;
@@ -33,7 +35,16 @@ public class MnemonicStringParser extends CompostParser {
 			int address = Integer.parseInt(tokens[0].trim());
 			String mnemonic = tokens[1].trim();
 			
-			getCompost().initOperation(address, mnemonic);
+			// arguments
+			ArrayList<String> arguments = new ArrayList<String>();
+			if (tokens.length == 3) {
+				String[] args = tokens[2].split(",");
+				for (String arg : args) {
+					arguments.add(arg.trim());
+				}
+			}
+			
+			getCompost().initOperation(address, mnemonic, arguments);
 		}
 		
 	}

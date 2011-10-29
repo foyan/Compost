@@ -1,6 +1,7 @@
 package ch.hszt.kfh.compost;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import ch.hszt.kfh.compost.operations.ADD;
@@ -99,7 +100,7 @@ public class Compost {
 		}
 	}
 	
-	public void initOperation(int address, String mnemonic) throws Exception {
+	public void initOperation(int address, String mnemonic, List<String> arguments) throws Exception {
 		Operation op = decoder.getOperation(mnemonic);
 		if (op == null) {
 			throw new Exception("Unsupported operation: " + mnemonic);
@@ -108,10 +109,11 @@ public class Compost {
 		MemCell lsb = getMem(address + 1);
 		
 		boolean[] opCode = op.opCode();
+		opCode = op.addArguments(opCode, arguments);
 		for (int i = 0; i < msb.getSize(); i++) {
 			msb.setBit(i, opCode[i]);
 			lsb.setBit(i, opCode[i + msb.getSize()]);
 		}
 	}
-	
+		
 }

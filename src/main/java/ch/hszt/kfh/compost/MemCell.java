@@ -1,6 +1,5 @@
 package ch.hszt.kfh.compost;
 
-import java.util.Observable;
 import java.util.Observer;
 
 import ch.hszt.kfh.compost.ui.ManualObservable;

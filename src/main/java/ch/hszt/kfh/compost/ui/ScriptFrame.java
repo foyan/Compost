@@ -14,6 +14,8 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 	private static final long serialVersionUID = 1L;
 	
 	private JTextArea code = new JTextArea("# Address\tMnemonic\tArgument1, Argument2\n\n");
+	
+	private String fileName;
 
 	public ScriptFrame() {
 		super();
@@ -30,6 +32,16 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		JButton initButton = new JButton("Init");
 		initButton.addActionListener(Program.instance().getInitFromScript(this));
 		buttons.add(initButton);
+		
+		updateTitle();
+	}
+	
+	private void updateTitle() {
+		if (fileName == null) {
+			setTitle("Code - Untitled");
+		} else {
+			setTitle("Code - " + fileName);
+		}
 	}
 	
 	@Override

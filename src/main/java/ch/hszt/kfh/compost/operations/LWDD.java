@@ -1,5 +1,7 @@
 package ch.hszt.kfh.compost.operations;
 
+import java.util.List;
+
 import ch.hszt.kfh.compost.Compost;
 import ch.hszt.kfh.compost.MemCell;
 import ch.hszt.kfh.compost.Tools;
@@ -32,6 +34,21 @@ public class LWDD extends Operation {
 		}
 	}
 	
+	@Override
+	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
+		if (arguments.size() != 2) {
+			throw new Exception("LWDD requires 2 arguments.");
+		}
+		boolean[] reg = getRegisterIdArgumentFromMnemonic(arguments.get(0));
+		int addr = Integer.parseInt(arguments.get(1));
+		boolean[] address = Tools.toBinary(addr, 10);
+		opCode[4] = reg[0];
+		opCode[5] = reg[1];
+		for (int i = 0; i < address.length; i++) {
+			opCode[6 + i] = address[i];
+		}
+		return opCode;
+	}
 	
 
 }

@@ -1,5 +1,7 @@
 package ch.hszt.kfh.compost.operations;
 
+import java.util.List;
+
 import ch.hszt.kfh.compost.Compost;
 import ch.hszt.kfh.compost.Tools;
 
@@ -20,6 +22,13 @@ public class INC extends AbstractAddition {
 		return "INC";
 	}
 	
+	@Override
+	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
+		if (arguments.size() == 0) {
+			throw new Exception("INC does not require any arguments.");
+		}
+		return opCode;
+	}
 	
 
 }

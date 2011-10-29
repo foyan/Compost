@@ -1,6 +1,9 @@
 package ch.hszt.kfh.compost.operations;
 
+import java.util.List;
+
 import ch.hszt.kfh.compost.Compost;
+import ch.hszt.kfh.compost.Tools;
 
 public class ADDD extends AbstractAddition {
 
@@ -22,6 +25,19 @@ public class ADDD extends AbstractAddition {
 		}
 		operand[0] = argument[0];
 		return operand;
+	}
+
+	@Override
+	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
+		if (arguments.size() != 1) {
+			throw new Exception("ADDD requires one argument.");
+		}
+		int n = Integer.parseInt(arguments.get(0));
+		boolean[] b = Tools.toComplement(n, 15);
+		for (int i = 0; i < b.length; i++) {
+			opCode[i+1] = b[i];
+		}
+		return opCode;
 	}
 
 }
