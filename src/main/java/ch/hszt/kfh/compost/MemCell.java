@@ -54,13 +54,21 @@ public class MemCell {
 	}
 	
 	private static ManualObservable changeObservable = new ManualObservable();
+	private static ManualObservable readObservable = new ManualObservable();
 		
 	protected void notifyChangeObservers() {
 		changeObservable.notifyObservers(this);
 	}
+	protected void notifyReadObservers() {
+		readObservable.notifyObservers(this);
+	}
 	
 	public static Observable getChangeObservable() {
 		return changeObservable;
+	}
+	
+	public static Observable getReadObservable() {
+		return readObservable;
 	}
 
 }

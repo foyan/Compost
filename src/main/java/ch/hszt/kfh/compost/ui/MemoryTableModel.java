@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
 
 import ch.hszt.kfh.compost.Compost;
 import ch.hszt.kfh.compost.MemCell;
-import ch.hszt.kfh.compost.Tools;
 
 public class MemoryTableModel extends AbstractTableModel implements Observer {
 
@@ -19,8 +18,11 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 	private ArrayList<Integer> cellsWritten = new ArrayList<Integer>();
 	private ArrayList<Integer> cellsRead = new ArrayList<Integer>();
 	
+	private FormatterBoxModel formatterBoxModel;
+		
 	public MemoryTableModel() {
 		MemCell.getChangeObservable().addObserver(this);
+		MemCell.getReadObservable().addObserver(this);
 		Program.instance().getCompost().getInstructionPointerChangedObservable().addObserver(this);
 		Program.instance().getCompost().getCycleStartedObservable().addObserver(this);
 	}
@@ -42,7 +44,7 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 		}
 		MemCell cell1 = Program.instance().getCompost().getMem(row * 4 * 2 + (col - 1) * 2);
 		MemCell cell2 = Program.instance().getCompost().getMem(row * 4 * 2 + (col - 1) * 2 + 1);
-		return Tools.fromBooleanArray(cell1.getBits(), false) + " " + Tools.fromBooleanArray(cell2.getBits(), false);
+		return formatterBoxModel.getFormatter().format(cell1.getBits(), cell2.getBits());
 	}
 	
 	@Override
@@ -58,6 +60,12 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 		if (arg0 == MemCell.getChangeObservable()) {
 			MemCell memCell = (MemCell) arg1;
 			cellsWritten.add(memCell.getAddress());
+			fireTableCellUpdated(memCell.getAddress());
+			return;
+		}
+		if (arg0 == MemCell.getReadObservable()) {
+			MemCell memCell = (MemCell) arg1;
+			cellsRead.add(memCell.getAddress());
 			fireTableCellUpdated(memCell.getAddress());
 			return;
 		}
@@ -83,6 +91,9 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 			fireTableCellUpdated(ip);
 			return;
 		}
+		if (arg0 == formatterBoxModel.getChangedObservable()) {
+			fireTableDataChanged();
+		}
 	}
 	
 	private void fireTableCellUpdated(int address) {
@@ -98,6 +109,23 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 	public boolean isCurrentCellWritten(int row, int col) {
 		int address = row * 4 * 2 + (col - 1) * 2;
 		return cellsWritten.contains(address);
+	}
+	public boolean isCurrentCellRead(int row, int col) {
+		int address = row * 4 * 2 + (col -1) * 2;
+		return cellsRead.contains(address);
+	}
+
+	public FormatterBoxModel getFormatterBoxModel() {
+		return formatterBoxModel;
+	}
+	public void setFormatterBoxModel(FormatterBoxModel formatterBoxModel) {
+		if (this.formatterBoxModel != null) {
+			this.formatterBoxModel.getChangedObservable().deleteObserver(this);
+		}
+		this.formatterBoxModel = formatterBoxModel;
+		if (this.formatterBoxModel != null) {
+			this.formatterBoxModel.getChangedObservable().addObserver(this);
+		}
 	}
 
 }

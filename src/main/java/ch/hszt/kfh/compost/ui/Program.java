@@ -62,6 +62,25 @@ public class Program {
 		}
 	};
 	
+	private Runner runner;
+	
+	private ActionListener start = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			runner = new Runner();
+			new Thread(runner).start();
+		}
+	};
+	
+	private ActionListener stop = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (runner != null) {
+				runner.setStop();
+			}
+		}
+	};
+	
 		
 	public ActionListener getShowRegisters() {
 		return showRegisters;
@@ -93,6 +112,35 @@ public class Program {
 	
 	public ActionListener getStep() {
 		return step;
+	}
+	
+	public ActionListener getStart() {
+		return start;
+	}
+	
+	public ActionListener getStop() {
+		return stop;
+	}
+	
+	private class Runner implements Runnable {
+
+		private boolean stop;
+		
+		public void setStop() {
+			stop = true;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				while (!stop && compost.oneOperation()) {
+					Thread.sleep(500);
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.toString());
+			}
+		}
+		
 	}
 
 }

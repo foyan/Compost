@@ -32,6 +32,7 @@ public class LWDD extends Operation {
 				reg.setBit(j + i * Compost.MEM_SIZE, cellData[j]);
 			}
 		}
+		MemCell.getReadObservable().notifyObservers(compost.getMem(address));
 	}
 	
 	@Override

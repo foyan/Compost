@@ -30,12 +30,15 @@ public class Compost {
 	private MemCell[] memory = new MemCell[TOTAL_MEM];
 	
 	private int instructionPointer = ENTRY_POINT;
+	private int cycles = 0;
 	
 	private Decoder decoder = new Decoder();
 	
 	private ManualObservable instructionPointerChangedObservable = new ManualObservable();
 	private ManualObservable cycleStartedObservable = new ManualObservable();
-		
+	private ManualObservable carryBitChangedObservable = new ManualObservable();
+	private ManualObservable cycleFinishedObservable = new ManualObservable();	
+	
 	public Compost() {
 		// create registers
 		registers.put(RegisterId.INSTR, new MemCell(INSTR_SIZE));
@@ -73,6 +76,7 @@ public class Compost {
 	
 	public void setCarryBit(boolean carryBit) {
 		this.carryBit = carryBit;
+		carryBitChangedObservable.notifyObservers();
 	}
 	
 	public MemCell getMem(int address) {
@@ -104,6 +108,7 @@ public class Compost {
 		for (int i = 0; i < TOTAL_MEM; i++) {
 			getMem(i).clear();
 		}
+		cycles = 0;
 		cycleStartedObservable.notifyObservers();
 		setInstructionPointer(ENTRY_POINT);
 	}
@@ -124,14 +129,19 @@ public class Compost {
 		}
 	}
 	
-	public void oneOperation() throws Exception {
+	public boolean oneOperation() throws Exception {
 		cycleStartedObservable.notifyObservers();
 		transferInstruction();
 		decoder.decode(getRegister(RegisterId.INSTR));
+		boolean ok = false;
 		if (decoder.getCurrentOperation() != null) {
 			decoder.getCurrentOperation().exec(this, decoder.getCurrentArgument());
 			setInstructionPointer(instructionPointer + INSTR_SIZE / 8);
+			ok = true;
 		}
+		cycles++;
+		cycleFinishedObservable.notifyObservers();
+		return ok;
 	}
 		
 	private void transferInstruction() {
@@ -149,6 +159,16 @@ public class Compost {
 	}
 	public Observable getCycleStartedObservable() {
 		return cycleStartedObservable;
+	}
+	public Observable getCycleFinishedObservable() {
+		return cycleFinishedObservable;
+	}
+	public Observable getCarryBitChangedObservable() {
+		return carryBitChangedObservable;
+	}
+
+	public int getCycles() {
+		return cycles;
 	}
 	
 }
