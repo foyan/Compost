@@ -12,6 +12,10 @@ import ch.hszt.kfh.compost.operations.DEC;
 import ch.hszt.kfh.compost.operations.INC;
 import ch.hszt.kfh.compost.operations.LWDD;
 import ch.hszt.kfh.compost.operations.Operation;
+import ch.hszt.kfh.compost.operations.SLA;
+import ch.hszt.kfh.compost.operations.SLL;
+import ch.hszt.kfh.compost.operations.SRA;
+import ch.hszt.kfh.compost.operations.SRL;
 import ch.hszt.kfh.compost.operations.SWDD;
 import ch.hszt.kfh.compost.ui.ManualObservable;
 
@@ -59,6 +63,10 @@ public class Compost {
 		decoder.register(new DEC());
 		decoder.register(new LWDD());
 		decoder.register(new SWDD());
+		decoder.register(new SLA());
+		decoder.register(new SLL());
+		decoder.register(new SRA());
+		decoder.register(new SRL());
 		setInstructionPointer(ENTRY_POINT);
 	}
 	
