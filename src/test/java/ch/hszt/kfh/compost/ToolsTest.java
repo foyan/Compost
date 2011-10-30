@@ -96,6 +96,170 @@ public class ToolsTest {
 		}
 	}
 	
+	@Test
+	public void toHex4Bit0000() {
+		assertEquals("0", Tools.toHex(new boolean[] {false, false, false, false}, false));
+	}
 	
+	@Test
+	public void toHex4Bit0001() {
+		assertEquals("1", Tools.toHex(new boolean[] {false, false, false, true}, false));
+	}
+	
+	@Test
+	public void toHex4Bit0010() {
+		assertEquals("2", Tools.toHex(new boolean[] {false, false, true, false}, false));
+	}
+	
+	@Test
+	public void toHex4Bit0011() {
+		assertEquals("3", Tools.toHex(new boolean[] {false, false, true, true}, false));
+	}
 
+	@Test
+	public void toHex4Bit0100() {
+		assertEquals("4", Tools.toHex(new boolean[] {false, true, false, false}, false));
+	}
+	
+	@Test
+	public void toHex4Bit0101() {
+		assertEquals("5", Tools.toHex(new boolean[] {false, true, false, true}, false));
+	}
+	
+	@Test
+	public void toHex4Bit0110() {
+		assertEquals("6", Tools.toHex(new boolean[] {false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex4Bit0111() {
+		assertEquals("7", Tools.toHex(new boolean[] {false, true, true, true}, false));
+	}
+
+	@Test
+	public void toHex4Bit1000() {
+		assertEquals("8", Tools.toHex(new boolean[] {true, false, false, false}, false));
+	}
+	
+	@Test
+	public void toHex4Bit1001() {
+		assertEquals("9", Tools.toHex(new boolean[] {true, false, false, true}, false));
+	}
+	
+	@Test
+	public void toHex4Bit1010() {
+		assertEquals("A", Tools.toHex(new boolean[] {true, false, true, false}, false));
+	}
+	
+	@Test
+	public void toHex4Bit1011() {
+		assertEquals("B", Tools.toHex(new boolean[] {true, false, true, true}, false));
+	}
+
+	@Test
+	public void toHex4Bit1100() {
+		assertEquals("C", Tools.toHex(new boolean[] {true, true, false, false}, false));
+	}
+	
+	@Test
+	public void toHex4Bit1101() {
+		assertEquals("D", Tools.toHex(new boolean[] {true, true, false, true}, false));
+	}
+	
+	@Test
+	public void toHex4Bit1110() {
+		assertEquals("E", Tools.toHex(new boolean[] {true, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex4Bit1111() {
+		assertEquals("F", Tools.toHex(new boolean[] {true, true, true, true}, false));
+	}
+
+
+
+	
+	@Test
+	public void toHex8Bit00000110() {
+		assertEquals("06", Tools.toHex(new boolean[] {false, false, false, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit00010110() {
+		assertEquals("16", Tools.toHex(new boolean[] {false, false, false, true, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit00100110() {
+		assertEquals("26", Tools.toHex(new boolean[] {false, false, true, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit00110110() {
+		assertEquals("36", Tools.toHex(new boolean[] {false, false, true, true, false, true, true, false}, false));
+	}
+
+	@Test
+	public void toHex8Bit01000110() {
+		assertEquals("46", Tools.toHex(new boolean[] {false, true, false, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit01010110() {
+		assertEquals("56", Tools.toHex(new boolean[] {false, true, false, true, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit01100110() {
+		assertEquals("66", Tools.toHex(new boolean[] {false, true, true, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit01110110() {
+		assertEquals("76", Tools.toHex(new boolean[] {false, true, true, true, false, true, true, false}, false));
+	}
+
+	@Test
+	public void toHex8Bit10000110() {
+		assertEquals("86", Tools.toHex(new boolean[] {true, false, false, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit10010110() {
+		assertEquals("96", Tools.toHex(new boolean[] {true, false, false, true, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit10100110() {
+		assertEquals("A6", Tools.toHex(new boolean[] {true, false, true, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit10110110() {
+		assertEquals("B6", Tools.toHex(new boolean[] {true, false, true, true, false, true, true, false}, false));
+	}
+
+	@Test
+	public void toHex8Bit11000110() {
+		assertEquals("C6", Tools.toHex(new boolean[] {true, true, false, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit11010110() {
+		assertEquals("D6", Tools.toHex(new boolean[] {true, true, false, true, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit11100110() {
+		assertEquals("E6", Tools.toHex(new boolean[] {true, true, true, false, false, true, true, false}, false));
+	}
+	
+	@Test
+	public void toHex8Bit11110110() {
+		assertEquals("F6", Tools.toHex(new boolean[] {true, true, true, true, false, true, true, false}, false));
+	}
+
+
+	
+	
 }

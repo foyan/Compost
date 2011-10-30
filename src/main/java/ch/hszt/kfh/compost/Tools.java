@@ -95,4 +95,25 @@ public class Tools {
 		return s;
 	}
 
+	private static final char[] hexChars = new char[] { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
+
+	public static String toHex(boolean[] b, boolean makeByteGaps) {
+		String s = "";
+		int n = 0;
+		for (int i = 0; i < b.length; i++) {
+			int e = 3 - (i % 4);
+			if (b[i]) {
+				n += Math.pow(2, e);
+			}
+			if (i % 4 == 3) {
+				s += hexChars[n];
+				n = 0;
+			}
+			if (makeByteGaps && i % 2 == 0) {
+				s += " ";
+			}
+		}
+		return s;
+	}
+
 }
