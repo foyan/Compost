@@ -7,10 +7,17 @@ import java.util.Set;
 
 import ch.hszt.kfh.compost.operations.ADD;
 import ch.hszt.kfh.compost.operations.ADDD;
+import ch.hszt.kfh.compost.operations.AND;
+import ch.hszt.kfh.compost.operations.B;
+import ch.hszt.kfh.compost.operations.BC;
+import ch.hszt.kfh.compost.operations.BNZ;
+import ch.hszt.kfh.compost.operations.BZ;
 import ch.hszt.kfh.compost.operations.CLR;
 import ch.hszt.kfh.compost.operations.DEC;
 import ch.hszt.kfh.compost.operations.INC;
 import ch.hszt.kfh.compost.operations.LWDD;
+import ch.hszt.kfh.compost.operations.NOT;
+import ch.hszt.kfh.compost.operations.OR;
 import ch.hszt.kfh.compost.operations.Operation;
 import ch.hszt.kfh.compost.operations.SLA;
 import ch.hszt.kfh.compost.operations.SLL;
@@ -67,6 +74,13 @@ public class Compost {
 		decoder.register(new SLL());
 		decoder.register(new SRA());
 		decoder.register(new SRL());
+		decoder.register(new AND());
+		decoder.register(new OR());
+		decoder.register(new NOT());
+		decoder.register(new B());
+		decoder.register(new BZ());
+		decoder.register(new BC());
+		decoder.register(new BNZ());
 		setInstructionPointer(ENTRY_POINT);
 	}
 	
