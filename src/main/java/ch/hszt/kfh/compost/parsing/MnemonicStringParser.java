@@ -1,6 +1,7 @@
 package ch.hszt.kfh.compost.parsing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MnemonicStringParser extends CompostParser {
 	
@@ -15,12 +16,44 @@ public class MnemonicStringParser extends CompostParser {
 		
 		getCompost().clear();
 		
+		int address = 100;
+		HashMap<String, Integer> labels = new HashMap<String, Integer>();
+		
+		for (String l : string.split("\n")) {
+			String line = l;
+			if (line.contains(";")) {
+				line = line.substring(0, line.indexOf(";"));
+			}
+			line = line.trim();
+			
+			// nothing
+			if (line.isEmpty()) {
+				continue;
+			}
+			
+			// label
+			if (line.endsWith(":")) {
+				String label = line.substring(0, line.length()-1);
+				if (labels.containsKey(label)) {
+					throw new Exception("Label \"" + label + "\" already defined.");
+				}
+				labels.put(label, address);
+				continue;
+			}
+			
+			// data
+			if (line.startsWith("@")) {
+				//String 
+			}
+			
+		}
+		
 		for (String l : string.split("\n")) {
 			
 			String line = l.trim();
 			
 			// comments
-			if (line.startsWith("#")) {
+			if (line.startsWith(";")) {
 				continue;
 			}
 			
@@ -32,7 +65,7 @@ public class MnemonicStringParser extends CompostParser {
 			// lines
 			String[] tokens = line.split("\t");
 			
-			int address = Integer.parseInt(tokens[0].trim());
+			//int address = Integer.parseInt(tokens[0].trim());
 			String mnemonic = tokens[1].trim();
 			
 			// arguments
