@@ -5,29 +5,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 
-import ch.hszt.kfh.compost.operations.ADD;
-import ch.hszt.kfh.compost.operations.ADDD;
-import ch.hszt.kfh.compost.operations.AND;
-import ch.hszt.kfh.compost.operations.B;
-import ch.hszt.kfh.compost.operations.BC;
-import ch.hszt.kfh.compost.operations.BCD;
-import ch.hszt.kfh.compost.operations.BD;
-import ch.hszt.kfh.compost.operations.BNZ;
-import ch.hszt.kfh.compost.operations.BNZD;
-import ch.hszt.kfh.compost.operations.BZ;
-import ch.hszt.kfh.compost.operations.BZD;
-import ch.hszt.kfh.compost.operations.CLR;
-import ch.hszt.kfh.compost.operations.DEC;
-import ch.hszt.kfh.compost.operations.INC;
-import ch.hszt.kfh.compost.operations.LWDD;
-import ch.hszt.kfh.compost.operations.NOT;
-import ch.hszt.kfh.compost.operations.OR;
 import ch.hszt.kfh.compost.operations.Operation;
-import ch.hszt.kfh.compost.operations.SLA;
-import ch.hszt.kfh.compost.operations.SLL;
-import ch.hszt.kfh.compost.operations.SRA;
-import ch.hszt.kfh.compost.operations.SRL;
-import ch.hszt.kfh.compost.operations.SWDD;
 import ch.hszt.kfh.compost.ui.ManualObservable;
 
 public class Compost {
@@ -67,29 +45,6 @@ public class Compost {
 			memory[i] = new MemCell(MEM_SIZE);
 			memory[i].setAddress(i);
 		}
-		// register operations
-		decoder.register(new CLR());
-		decoder.register(new ADD());
-		decoder.register(new ADDD());
-		decoder.register(new INC());
-		decoder.register(new DEC());
-		decoder.register(new LWDD());
-		decoder.register(new SWDD());
-		decoder.register(new SLA());
-		decoder.register(new SLL());
-		decoder.register(new SRA());
-		decoder.register(new SRL());
-		decoder.register(new AND());
-		decoder.register(new OR());
-		decoder.register(new NOT());
-		decoder.register(new B());
-		decoder.register(new BZ());
-		decoder.register(new BC());
-		decoder.register(new BNZ());
-		decoder.register(new BZD());
-		decoder.register(new BNZD());
-		decoder.register(new BCD());
-		decoder.register(new BD());
 		setInstructionPointer(ENTRY_POINT);
 	}
 	
