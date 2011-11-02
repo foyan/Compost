@@ -19,6 +19,11 @@ public class SLL extends Operation {
 	}
 
 	@Override
+	public int getArgumentCount() {
+		return 0;
+	}
+
+	@Override
 	public void exec(Compost compost, boolean[] argument) throws Exception {
 		MemCell reg = compost.getRegister(RegisterId.ACCUM);
 		compost.setCarryBit(reg.getBit(0));
@@ -30,9 +35,6 @@ public class SLL extends Operation {
 
 	@Override
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
-		if (arguments.size() != 0) {
-			throw new Exception("SLL does not require any arguments.");
-		}
 		return opCode;
 	}
 

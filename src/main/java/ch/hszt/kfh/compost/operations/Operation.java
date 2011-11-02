@@ -15,6 +15,8 @@ public abstract class Operation {
 	public abstract void exec(Compost compost, boolean[] argument) throws Exception;
 	
 	public abstract boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception;
+	
+	public abstract int getArgumentCount();
 
 	private static boolean[] stringToInstrBitArray(String s, char magicChar, boolean not) {
 		boolean[] arr = new boolean[Compost.INSTR_SIZE];
@@ -25,6 +27,12 @@ public abstract class Operation {
 			}
 		}
 		return arr;
+	}
+	
+	public void checkArgumentCount(List<String> arguments) throws Exception {
+		if (arguments.size() != getArgumentCount()) {
+			throw new Exception(mnemonic() + " requires " + getArgumentCount() + " argument(s), but " + arguments.size() + " given.");
+		}
 	}
 	
 	public boolean[] opCode() {
@@ -93,6 +101,18 @@ public abstract class Operation {
 			return RegisterId.REG_2;
 		}
 		if (id.equals("REG_3")) {
+			return RegisterId.REG_3;
+		}
+		if (id.equals("R0")) {
+			return RegisterId.ACCUM;
+		}
+		if (id.equals("R1")) {
+			return RegisterId.REG_1;
+		}
+		if (id.equals("R2")) {
+			return RegisterId.REG_2;
+		}
+		if (id.equals("R3")) {
 			return RegisterId.REG_3;
 		}
 		throw new Exception("Unknown Register \"" + id + "\".");

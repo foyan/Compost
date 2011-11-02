@@ -23,10 +23,12 @@ public class DEC extends AbstractAddition {
 	}
 
 	@Override
+	public int getArgumentCount() {
+		return 0;
+	}
+
+	@Override
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
-		if (arguments.size() == 0) {
-			throw new Exception("DEC does not require any arguments.");
-		}
 		return opCode;
 	}
 

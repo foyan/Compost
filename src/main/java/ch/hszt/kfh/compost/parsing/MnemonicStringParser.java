@@ -3,6 +3,8 @@ package ch.hszt.kfh.compost.parsing;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ch.hszt.kfh.compost.Tools;
+
 public class MnemonicStringParser extends CompostParser {
 	
 	private String string;
@@ -40,46 +42,85 @@ public class MnemonicStringParser extends CompostParser {
 				labels.put(label, address);
 				continue;
 			}
-			
+						
 			// data
 			if (line.startsWith("@")) {
-				//String 
-			}
-			
-		}
-		
-		for (String l : string.split("\n")) {
-			
-			String line = l.trim();
-			
-			// comments
-			if (line.startsWith(";")) {
-				continue;
-			}
-			
-			// empty lines
-			if (line.equals("")) {
-				continue;
-			}
-			
-			// lines
-			String[] tokens = line.split("\t");
-			
-			//int address = Integer.parseInt(tokens[0].trim());
-			String mnemonic = tokens[1].trim();
-			
-			// arguments
-			ArrayList<String> arguments = new ArrayList<String>();
-			if (tokens.length == 3) {
-				String[] args = tokens[2].split(",");
-				for (String arg : args) {
-					arguments.add(arg.trim());
+				String[] tok = line.split("[\\s,]");
+
+				ArrayList<String> tokens = new ArrayList<String>();
+				for (String t : tok) {
+					String to = t.trim();
+					if (!to.isEmpty()) {
+						tokens.add(to);
+					}
 				}
+				
+				int dataAddress = Integer.parseInt(tokens.get(0).substring(1));
+				boolean[] dataValue = Tools.toComplement(Integer.parseInt(tokens.get(1)), 16);
+				boolean[] msb = new boolean[] {
+						dataValue[0], dataValue[1], dataValue[2], dataValue[3], 
+						dataValue[4], dataValue[5], dataValue[6], dataValue[7]
+				};
+				boolean[] lsb = new boolean[] {
+						dataValue[8], dataValue[9], dataValue[10], dataValue[11], 
+						dataValue[12], dataValue[13], dataValue[14], dataValue[15]
+				};
+				getCompost().getMem(dataAddress).setBits(msb);
+				getCompost().getMem(dataAddress+1).setBits(lsb);
+				
+				continue;
 			}
 			
-			getCompost().initOperation(address, mnemonic, arguments);
+			// code
+			{
+				String[] tok = line.split("[\\s,]");
+				
+				ArrayList<String> tokens = new ArrayList<String>();
+				for (String t : tok) {
+					String to = t.trim();
+					if (!to.isEmpty()) {
+						tokens.add(to);
+					}
+				}
+				
+				boolean directAddressing = isInteger(tokens.get(0));
+				int addressTokenCount = directAddressing ? 1 : 0;
+				
+				if (directAddressing) {
+					address = Integer.parseInt(tokens.get(0));
+				}
+				
+				String  mnemonic = tokens.get(addressTokenCount).trim();
+	
+				// arguments
+				ArrayList<String> arguments = new ArrayList<String>();
+				for (int i = 1 + addressTokenCount; i < tokens.size(); i++) {
+					String to = tokens.get(i);
+					// literal?
+					if (to.startsWith("#")) {
+						to = to.substring(1);
+					}
+					// label?
+					if (!isInteger(to) && labels.containsKey(to)) {
+						to = labels.get(to).toString();
+					}
+					arguments.add(to);
+				}
+				
+				getCompost().initOperation(address, mnemonic, arguments);
+			}
+
 		}
-		
+				
+	}
+	
+	private static boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 }

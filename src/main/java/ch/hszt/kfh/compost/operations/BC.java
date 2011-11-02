@@ -19,6 +19,11 @@ public class BC extends Operation {
 	}
 
 	@Override
+	public int getArgumentCount() {
+		return 1;
+	}
+
+	@Override
 	public void exec(Compost compost, boolean[] argument) throws Exception {
 		if (compost.getCarryBit()) {
 			MemCell reg2 = getRegister(compost, new boolean[] { argument[0], argument[1] });
@@ -29,9 +34,6 @@ public class BC extends Operation {
 
 	@Override
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
-		if (arguments.size() != 1) {
-			throw new Exception("BC requires one argument.");
-		}
 		boolean[] id = getRegisterIdArgumentFromMnemonic(arguments.get(0));
 		opCode[4] = id[0];
 		opCode[5] = id[1];

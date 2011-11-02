@@ -11,6 +11,11 @@ public class INC extends AbstractAddition {
 	public boolean[] getOperand(Compost compost, boolean[] argument) {
 		return Tools.toComplement(1, 16);
 	}
+	
+	@Override
+	public int getArgumentCount() {
+		return 0;
+	}
 
 	@Override
 	protected String opCodeString() {
@@ -24,9 +29,6 @@ public class INC extends AbstractAddition {
 	
 	@Override
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
-		if (arguments.size() == 0) {
-			throw new Exception("INC does not require any arguments.");
-		}
 		return opCode;
 	}
 	

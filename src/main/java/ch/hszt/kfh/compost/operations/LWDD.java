@@ -19,6 +19,11 @@ public class LWDD extends Operation {
 	}
 
 	@Override
+	public int getArgumentCount() {
+		return 2;
+	}
+
+	@Override
 	public void exec(Compost compost, boolean[] argument) throws Exception {
 		MemCell reg = getRegister(compost, new boolean[] { argument[1], argument[2] });
 		boolean[] addr = new boolean[argument.length - 3];
@@ -37,9 +42,6 @@ public class LWDD extends Operation {
 	
 	@Override
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
-		if (arguments.size() != 2) {
-			throw new Exception("LWDD requires 2 arguments.");
-		}
 		boolean[] reg = getRegisterIdArgumentFromMnemonic(arguments.get(0));
 		int addr = Integer.parseInt(arguments.get(1));
 		boolean[] address = Tools.toBinary(addr, 10);

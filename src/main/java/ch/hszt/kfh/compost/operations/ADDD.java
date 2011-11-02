@@ -18,6 +18,11 @@ public class ADDD extends AbstractAddition {
 	}
 	
 	@Override
+	public int getArgumentCount() {
+		return 1;
+	}
+
+	@Override
 	public boolean[] getOperand(Compost compost, boolean[] argument) {
 		boolean[] operand = new boolean[argument.length + 1];
 		for (int i = 0; i < argument.length; i++) {
@@ -29,9 +34,6 @@ public class ADDD extends AbstractAddition {
 
 	@Override
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
-		if (arguments.size() != 1) {
-			throw new Exception("ADDD requires one argument.");
-		}
 		int n = Integer.parseInt(arguments.get(0));
 		boolean[] b = Tools.toComplement(n, 15);
 		for (int i = 0; i < b.length; i++) {

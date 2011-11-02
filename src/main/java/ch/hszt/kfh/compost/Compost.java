@@ -10,8 +10,12 @@ import ch.hszt.kfh.compost.operations.ADDD;
 import ch.hszt.kfh.compost.operations.AND;
 import ch.hszt.kfh.compost.operations.B;
 import ch.hszt.kfh.compost.operations.BC;
+import ch.hszt.kfh.compost.operations.BCD;
+import ch.hszt.kfh.compost.operations.BD;
 import ch.hszt.kfh.compost.operations.BNZ;
+import ch.hszt.kfh.compost.operations.BNZD;
 import ch.hszt.kfh.compost.operations.BZ;
+import ch.hszt.kfh.compost.operations.BZD;
 import ch.hszt.kfh.compost.operations.CLR;
 import ch.hszt.kfh.compost.operations.DEC;
 import ch.hszt.kfh.compost.operations.INC;
@@ -37,6 +41,7 @@ public class Compost {
 	private HashMap<RegisterId, MemCell> registers = new HashMap<RegisterId, MemCell>();
 	
 	private boolean carryBit;
+	private boolean jump;
 	
 	private MemCell[] memory = new MemCell[TOTAL_MEM];
 	
@@ -81,6 +86,10 @@ public class Compost {
 		decoder.register(new BZ());
 		decoder.register(new BC());
 		decoder.register(new BNZ());
+		decoder.register(new BZD());
+		decoder.register(new BNZD());
+		decoder.register(new BCD());
+		decoder.register(new BD());
 		setInstructionPointer(ENTRY_POINT);
 	}
 	
@@ -113,13 +122,10 @@ public class Compost {
 		this.instructionPointer = instructionPointer;
 		instructionPointerChangedObservable.notifyObservers();
 	}
-	
-	public void jumpRelative(int delta) {
-		instructionPointer += delta;
-	}
-	
+		
 	public void jumpAbsolute(int address) {
-		instructionPointer = address;
+		setInstructionPointer(address);
+		jump = true;
 	}
 	
 	public void clear() {
@@ -158,7 +164,10 @@ public class Compost {
 		boolean ok = false;
 		if (decoder.getCurrentOperation() != null) {
 			decoder.getCurrentOperation().exec(this, decoder.getCurrentArgument());
-			setInstructionPointer(instructionPointer + INSTR_SIZE / 8);
+			if (!jump) {
+				setInstructionPointer(instructionPointer + INSTR_SIZE / 8);
+			}
+			jump = false;
 			ok = true;
 		}
 		cycles++;
