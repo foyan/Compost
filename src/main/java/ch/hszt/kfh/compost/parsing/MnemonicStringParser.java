@@ -108,9 +108,13 @@ public class MnemonicStringParser extends CompostParser {
 				}
 				
 				getCompost().initOperation(address, mnemonic, arguments);
+				
+				address = address + 2;
 			}
 
 		}
+		
+		getCompost().setHalt(address);
 				
 	}
 	

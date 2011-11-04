@@ -152,6 +152,16 @@ public class Compost {
 	public Observable getCarryBitChangedObservable() {
 		return carryBitChangedObservable;
 	}
+	
+	public void setHalt(int address) {
+		MemCell cell = getMem(address);
+		try {
+			cell.setBits(Tools.toBooleanArray("00001101"));
+			getMem(address + 1).setBits(Tools.toBooleanArray("00000000"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public int getCycles() {
 		return cycles;
