@@ -122,6 +122,12 @@ public class Program {
 		return stop;
 	}
 	
+	private int tempo = 500;
+	
+	public void setTempo(int tempo) {
+		this.tempo = tempo;
+	}
+	
 	private class Runner implements Runnable {
 
 		private boolean stop;
@@ -134,7 +140,7 @@ public class Program {
 		public void run() {
 			try {
 				while (!stop && compost.oneOperation()) {
-					Thread.sleep(500);
+					Thread.sleep(Program.this.tempo);
 				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, e.toString());

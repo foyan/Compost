@@ -1,5 +1,6 @@
 package ch.hszt.kfh.compost.ui;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,8 +8,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ch.hszt.kfh.compost.RegisterId;
@@ -26,11 +29,21 @@ public class RegistersFrame extends JFrame implements Observer {
 		setTitle("Registers");
 		setBounds(0, 0, 400, 200);
 		
-		getContentPane().setLayout(new GridLayout(0, 3));
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0, 3));
 		
-		getContentPane().add(new JLabel("Instruction Pointer:"));
-		getContentPane().add(instructionPointer);
-		getContentPane().add(cycles);
+		FormatterBoxModel fmb = new FormatterBoxModel();
+		JComboBox formatters = new JComboBox();
+		formatters.setModel(fmb);
+		getContentPane().add(formatters, BorderLayout.NORTH);
+		
+		//getContentPane().setLayout(new GridLayout(0, 3));
+		
+		getContentPane().add(panel, BorderLayout.CENTER);
+		
+		panel.add(new JLabel("Instruction Pointer:"));
+		panel.add(instructionPointer);
+		panel.add(cycles);
 		
 		updateInstructionPointer();
 		updateCarryBit();
@@ -45,12 +58,13 @@ public class RegistersFrame extends JFrame implements Observer {
 		Collections.sort(regIds);
 		
 		for (RegisterId regId : regIds) {
-			getContentPane().add(new JLabel(regId.toString() + ":"));
-			getContentPane().add(new MemCellField(Program.instance().getCompost().getRegister(regId)));
+			panel.add(new JLabel(regId.toString() + ":"));
+			MemCellField f = new MemCellField(fmb, Program.instance().getCompost().getRegister(regId));
+			panel.add(f);
 			if (regId == RegisterId.ACCUM) {
-				getContentPane().add(carryBit);
+				panel.add(carryBit);
 			} else {
-				getContentPane().add(new JLabel());
+				panel.add(new JLabel());
 			}
 		}
 	}

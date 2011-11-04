@@ -6,6 +6,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class CompostFrame extends JFrame {
 	
@@ -32,6 +35,18 @@ public class CompostFrame extends JFrame {
 		scriptButton.addActionListener(Program.instance().getShowScript());
 		getContentPane().add(scriptButton);
 		getContentPane().add(Box.createRigidArea(new Dimension(3, 1)));
+		
+		final JSlider tempo = new JSlider();
+		tempo.setMinimum(0);
+		tempo.setMaximum(750);
+		tempo.setValue(500);
+		tempo.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				Program.instance().setTempo(tempo.getValue());
+			}
+		});
+		getContentPane().add(tempo);
 		
 		getContentPane().add(Box.createHorizontalGlue());
 		

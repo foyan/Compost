@@ -109,7 +109,7 @@ public class Tools {
 				s += hexChars[n];
 				n = 0;
 			}
-			if (makeByteGaps && i % 2 == 0) {
+			if (makeByteGaps && i % 8 == 0 && !"".equals(s)) {
 				s += " ";
 			}
 		}
