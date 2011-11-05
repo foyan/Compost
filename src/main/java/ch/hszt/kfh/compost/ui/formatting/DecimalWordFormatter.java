@@ -6,7 +6,14 @@ public class DecimalWordFormatter implements DataFormatter {
 
 	@Override
 	public String format(boolean[] msb, boolean[] lsb) {
-		return (Tools.fromComplement(msb) * 256 + Tools.fromComplement(lsb)) + "";
+		boolean[] b = new boolean[msb.length + lsb.length];
+		for (int i = 0; i < msb.length; i++) {
+			b[i] = msb[i];
+		}
+		for (int i = 0; i < lsb.length; i++) {
+			b[i + msb.length] = lsb[i];
+		}
+		return (Tools.fromComplement(b)) + "";
 	}
 
 	@Override
