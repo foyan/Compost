@@ -56,7 +56,13 @@ public class MnemonicStringParser extends CompostParser {
 				}
 				
 				int dataAddress = Integer.parseInt(tokens.get(0).substring(1));
-				boolean[] dataValue = Tools.toComplement(Integer.parseInt(tokens.get(1)), 16);
+				
+				int dataToken = Integer.parseInt(tokens.get(1));
+				if (paramData.containsKey(dataAddress)) {
+					dataToken = paramData.get(dataAddress);
+				}
+				
+				boolean[] dataValue = Tools.toComplement(dataToken, 16);
 				boolean[] msb = new boolean[] {
 						dataValue[0], dataValue[1], dataValue[2], dataValue[3], 
 						dataValue[4], dataValue[5], dataValue[6], dataValue[7]
@@ -116,6 +122,12 @@ public class MnemonicStringParser extends CompostParser {
 		
 		getCompost().setHalt(address);
 				
+	}
+	
+	private HashMap<Integer, Integer> paramData = new HashMap<Integer, Integer>();
+	
+	public void setParamData(int address, int data) {
+		paramData.put(address, data);
 	}
 	
 	private static boolean isInteger(String s) {

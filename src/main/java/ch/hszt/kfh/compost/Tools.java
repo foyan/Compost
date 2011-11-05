@@ -31,6 +31,17 @@ public class Tools {
 		return fromBinary(data) * (negative ? -1 : 1);
 	}
 	
+	public static int fromComplement(boolean[] msb, boolean[] lsb) {
+		boolean[] b = new boolean[msb.length + lsb.length];
+		for (int i = 0; i < msb.length; i++) {
+			b[i] = msb[i];
+		}
+		for (int i = 0; i < lsb.length; i++) {
+			b[i + msb.length] = lsb[i];
+		}
+		return fromComplement(b);
+	}
+	
 	public static int fromBinary(boolean[] data) {
 		int n = 0;
 		for (int i = 0; i < data.length; i++) {

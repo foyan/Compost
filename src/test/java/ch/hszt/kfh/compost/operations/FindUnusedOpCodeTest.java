@@ -14,7 +14,7 @@ public class FindUnusedOpCodeTest {
 		for (int i = 0; i < Math.pow(2, 16)-1; i++) {
 			boolean[] b = Tools.toBinary(i, 16);
 			if (!dec.canDecode(b)) {
-				System.out.println(Tools.fromBooleanArray(b, true));
+				//System.out.println(Tools.fromBooleanArray(b, true));
 			}
 		}
 	}
