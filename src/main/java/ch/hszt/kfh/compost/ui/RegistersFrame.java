@@ -59,7 +59,7 @@ public class RegistersFrame extends JFrame implements Observer {
 		
 		for (RegisterId regId : regIds) {
 			panel.add(new JLabel(regId.toString() + ":"));
-			MemCellField f = new MemCellField(fmb, Program.instance().getCompost().getRegister(regId));
+			MemCellField f = new MemCellField(fmb, Program.instance().getCompost().getRegister(regId), regId != RegisterId.INSTR);
 			panel.add(f);
 			if (regId == RegisterId.ACCUM) {
 				panel.add(carryBit);

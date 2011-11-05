@@ -21,15 +21,19 @@ public class ADDD extends AbstractAddition {
 	public int getArgumentCount() {
 		return 1;
 	}
-
-	@Override
-	public boolean[] getOperand(Compost compost, boolean[] argument) {
+	
+	private static boolean[] extendNumber(boolean[] argument) {
 		boolean[] operand = new boolean[argument.length + 1];
 		for (int i = 0; i < argument.length; i++) {
 			operand[i+1] = argument[i];
 		}
 		operand[0] = argument[0];
 		return operand;
+	}
+
+	@Override
+	public boolean[] getOperand(Compost compost, boolean[] argument) {
+		return extendNumber(argument);
 	}
 
 	@Override
@@ -40,6 +44,11 @@ public class ADDD extends AbstractAddition {
 			opCode[i+1] = b[i];
 		}
 		return opCode;
+	}
+
+	@Override
+	public String decodeArgument(boolean[] argument) {
+		return Tools.fromComplement(extendNumber(argument)) + "";
 	}
 
 }

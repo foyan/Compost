@@ -42,6 +42,17 @@ public class SWDD extends Operation {
 	}
 
 	@Override
+	public String decodeArgument(boolean[] argument) {
+		String reg = getMnemonicRegisterId(new boolean[] { argument[1], argument[2] }).name();
+		boolean[] addr = new boolean[argument.length - 3];
+		for (int i = 3; i < argument.length; i++) {
+			addr[i - 3] = argument[i];
+		}
+		int address = Tools.fromBinary(addr);
+		return reg + ", " + address;
+	}
+
+	@Override
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
 		boolean[] reg = getRegisterIdArgumentFromMnemonic(arguments.get(0));
 		int addr = Integer.parseInt(arguments.get(1));

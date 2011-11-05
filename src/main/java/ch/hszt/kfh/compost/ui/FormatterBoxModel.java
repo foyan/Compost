@@ -11,6 +11,7 @@ import ch.hszt.kfh.compost.ui.formatting.DataFormatter;
 import ch.hszt.kfh.compost.ui.formatting.DecimalBytesFormatter;
 import ch.hszt.kfh.compost.ui.formatting.DecimalWordFormatter;
 import ch.hszt.kfh.compost.ui.formatting.HexBytesFormatter;
+import ch.hszt.kfh.compost.ui.formatting.OpCodeFormatter;
 import ch.hszt.kfh.compost.ui.formatting.TwoComplementFormatter;
 
 public class FormatterBoxModel implements ComboBoxModel {
@@ -24,6 +25,10 @@ public class FormatterBoxModel implements ComboBoxModel {
 		formatters.add(new DecimalBytesFormatter());
 		formatters.add(new DecimalWordFormatter());
 		formatters.add(new HexBytesFormatter());
+		formatters.add(new OpCodeFormatter(new TwoComplementFormatter()));
+		formatters.add(new OpCodeFormatter(new DecimalBytesFormatter()));
+		formatters.add(new OpCodeFormatter(new DecimalWordFormatter()));
+		formatters.add(new OpCodeFormatter(new HexBytesFormatter()));
 		formatter = formatters.get(0);
 	}
 	

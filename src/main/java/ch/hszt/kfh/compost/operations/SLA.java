@@ -37,5 +37,11 @@ public class SLA extends Operation {
 	public boolean[] addArguments(boolean[] opCode, List<String> arguments) throws Exception {
 		return opCode;
 	}
+	
+	@Override
+	public String decodeArgument(boolean[] argument) {
+		return "";
+	}
+
 
 }

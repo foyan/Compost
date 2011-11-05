@@ -33,4 +33,9 @@ public abstract class AbstractDirectBranch extends Operation {
 		return Tools.fromBinary(a);
 	}
 
+	@Override
+	public String decodeArgument(boolean[] argument) {
+		return getAddress(argument) + "";
+	}
+
 }

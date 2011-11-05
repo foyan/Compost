@@ -61,6 +61,8 @@ public abstract class Operation {
 		return null;
 	}
 	
+	public abstract String decodeArgument(boolean[] argument);
+	
 	protected boolean[] getRegisterIdArgumentFromMnemonic(String id) throws Exception {
 		RegisterId regId = getMnemonicRegisterId(id);
 		if (regId == RegisterId.ACCUM) {
@@ -74,6 +76,22 @@ public abstract class Operation {
 		}
 		if (regId == RegisterId.REG_3) {
 			return new boolean[] { true, true };
+		}
+		return null;
+	}
+	
+	protected RegisterId getMnemonicRegisterId(boolean[] data) {
+		if (!data[0] && !data[1]) {
+			return RegisterId.ACCUM;
+		}
+		if (!data[0] && data[1]) {
+			return RegisterId.REG_1;
+		}
+		if (data[0] && !data[1]) {
+			return RegisterId.REG_2;
+		}
+		if (data[0] && data[1]) {
+			return RegisterId.REG_3;
 		}
 		return null;
 	}

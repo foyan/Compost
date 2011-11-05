@@ -38,4 +38,9 @@ public class SLL extends Operation {
 		return opCode;
 	}
 
+	@Override
+	public String decodeArgument(boolean[] argument) {
+		return "";
+	}
+
 }

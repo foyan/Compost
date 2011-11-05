@@ -166,5 +166,5 @@ public class Compost {
 	public int getCycles() {
 		return cycles;
 	}
-	
+		
 }

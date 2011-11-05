@@ -13,10 +13,12 @@ public class MemCellField extends JTextField implements Observer {
 
 	private MemCell memCell;
 	private FormatterBoxModel formatterBoxModel;
+	private boolean isDataCell;
 	
-	public MemCellField(FormatterBoxModel formatterBoxModel, MemCell memCell) {
+	public MemCellField(FormatterBoxModel formatterBoxModel, MemCell memCell, boolean isDataCell) {
 		super();
 		this.formatterBoxModel = formatterBoxModel;
+		this.isDataCell = isDataCell;
 		formatterBoxModel.getChangedObservable().addObserver(this);
 		this.memCell = memCell;
 		MemCell.getChangeObservable().addObserver(this);
@@ -24,7 +26,7 @@ public class MemCellField extends JTextField implements Observer {
 	}
 		
 	private void updateView() {
-		setText(formatterBoxModel.getFormatter().format(memCell.getBits()));
+		setText(formatterBoxModel.getFormatter().format(memCell.getBits(), isDataCell));
 	}
 
 	@Override

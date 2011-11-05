@@ -40,4 +40,9 @@ public class OR extends Operation {
 		return opCode;
 	}
 
+	@Override
+	public String decodeArgument(boolean[] argument) {
+		return getMnemonicRegisterId(new boolean[] { argument[0], argument[1] }).name();
+	}
+
 }

@@ -82,7 +82,7 @@ public class Decoder {
 		return false;
 	}
 	
-	public void decode(MemCell cell) {
+	public void decode(boolean[] data) {
 		// clean up
 		currentOperation = null;
 		currentArgument = null;
@@ -92,7 +92,7 @@ public class Decoder {
 			boolean[] opCodeMask = op.opCodeMask();
 			boolean ok = true;
 			for (int i = 0; i < Compost.INSTR_SIZE; i++) {
-				if (opCodeMask[i] && (cell.getBit(i) != opCode[i])) {
+				if (opCodeMask[i] && (data[i] != opCode[i])) {
 					ok = false;
 					break;
 				}
@@ -111,12 +111,16 @@ public class Decoder {
 					c = 0;
 					for (int i = 0; i < opCodeMask.length; i++) {
 						if (!opCodeMask[i]) {
-							currentArgument[c++] = cell.getBit(i);
+							currentArgument[c++] = data[i];
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	public void decode(MemCell cell) {
+		decode(cell.getBits());
 	}
 	
 	public Operation getOperation(String mnemonic) {

@@ -10,12 +10,12 @@ public class TwoComplementFormatter implements DataFormatter {
 	}
 	
 	@Override
-	public String format(boolean[] msb, boolean[] lsb) {
+	public String format(boolean[] msb, boolean[] lsb, boolean isDataCell) {
 		return Tools.fromBooleanArray(msb, false) + " " + Tools.fromBooleanArray(lsb, false);
 	}
 	
 	@Override
-	public String format(boolean[] word) {
+	public String format(boolean[] word, boolean isDataCell) {
 		return Tools.fromBooleanArray(word, true);
 	}
 
