@@ -17,18 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import ch.hszt.kfh.compost.Compost;
+import ch.hszt.kfh.compost.Converter;
+import ch.hszt.kfh.compost.parsing.MnemonicStringParser;
+import ch.hszt.kfh.compost.ui.formatting.TwoComplementFormatter;
+
 public class ScriptFrame extends JFrame implements ScriptProvider {
 
 	private static final long serialVersionUID = 1L;
-
-	/*
-	 * private JTextArea code = new JTextArea("; Direct Addressing\n"); private
-	 * JTextArea code = new
-	 * JTextArea("; [Address:] Mnemonic Argument1[, Argument2]\n\n");
-	 * 
-	 * private static final String initialString = "; Direct Addressing\n:" +
-	 * "; Address:"
-	 */
 
 	private JTextArea code = new JTextArea(
 			"; [Address:] Mnemonic Argument1[, Argument2]\n\n");
@@ -60,12 +56,17 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		JButton saveAsButton = new JButton("Save as...");
 		saveAsButton.addActionListener(saveAs);
 		buttons.add(saveAsButton);
-
+		
+		buttons.add(Box.createHorizontalStrut(10));
+		
+		JButton convertToBinaryButton = new JButton("=> bin");
+		convertToBinaryButton.addActionListener(convertToBinary);
+		buttons.add(convertToBinaryButton);
+		
 		buttons.add(Box.createHorizontalGlue());
 
 		JButton initButton = new JButton("Init");
-		initButton
-				.addActionListener(Program.instance().getInitFromScript(this));
+		initButton.addActionListener(Program.instance().getInitFromScript(this));
 		buttons.add(initButton);
 
 		updateTitle();
@@ -121,6 +122,22 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 
+		}
+	};
+	
+	private ActionListener convertToBinary = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			Converter conv = new Converter();
+			conv.setDirectAddressing(false);
+			conv.setFormatter(new TwoComplementFormatter());
+			conv.setParser(new MnemonicStringParser(provideScript()));
+			conv.getParser().setCompost(new Compost());
+			try {
+				code.setText(conv.convert());
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.toString());
+			}
 		}
 	};
 
