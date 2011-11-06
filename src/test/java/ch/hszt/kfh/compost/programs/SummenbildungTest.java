@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ch.hszt.kfh.compost.Compost;
 import ch.hszt.kfh.compost.Tools;
-import ch.hszt.kfh.compost.parsing.MnemonicStringParser;
+import ch.hszt.kfh.compost.parsing.MnemonicParser;
 
 public class SummenbildungTest {
 	
@@ -23,7 +23,8 @@ public class SummenbildungTest {
 		
 		// load program and parameters
 		Compost compost = new Compost();
-		MnemonicStringParser parser = new MnemonicStringParser(TestUtils.readFile("src/main/resources/Summenbildung.compost"));
+		MnemonicParser parser = new MnemonicParser();
+		parser.setString(TestUtils.readFile("src/main/resources/Summenbildung.compost"));
 		parser.setCompost(compost);
 		parser.setParamData(200, start);
 		parser.setParamData(202, end);

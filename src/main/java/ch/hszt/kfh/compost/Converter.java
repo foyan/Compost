@@ -16,11 +16,7 @@ public class Converter implements Observer {
 	private HashMap<Integer, String> result = new HashMap<Integer, String>();
 
 	private Compost compost = new Compost();
-	
-	public Converter() {
-		MemCell.getChangeObservable().addObserver(this);
-	}
-	
+		
 	public CompostParser getParser() {
 		return parser;
 	}
@@ -31,6 +27,7 @@ public class Converter implements Observer {
 	
 	public void setParser(CompostParser parser) {
 		this.parser = parser;
+		parser.setCompost(compost);
 	}
 	
 	public void setFormatter(DataFormatter formatter) {
@@ -47,6 +44,7 @@ public class Converter implements Observer {
 	
 	public String convert() throws Exception {
 		MemCell.getChangeObservable().addObserver(this);
+		compost.getClearedObservable().addObserver(this);
 		try {
 			result.clear();
 			parser.parse();
@@ -57,7 +55,7 @@ public class Converter implements Observer {
 				throw new Exception("First instruction needs to be at #100.");
 			}
 			StringBuilder sb = new StringBuilder();
-			for (int i = min; i <= max; i++) {
+			for (int i = min; i <= max; i = i + 2) {
 				if (result.containsKey(i)) {
 					if (directAddressing) {
 						sb.append(i + ": ");
@@ -71,6 +69,7 @@ public class Converter implements Observer {
 			return sb.toString();
 		} finally {
 			MemCell.getChangeObservable().deleteObserver(this);
+			compost.getClearedObservable().deleteObserver(this);
 		}
 	}
 	
@@ -98,6 +97,8 @@ public class Converter implements Observer {
 			if (address % 2 == 0) {
 				result.put(address, formatter.format(cell.getBits(), compost.getMem(address + 1).getBits(), address >= 200));
 			}
+		} else if (arg0 == compost.getClearedObservable()) {
+			result.clear();
 		}
 	}
 

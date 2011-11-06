@@ -32,6 +32,7 @@ public class Compost {
 	private ManualObservable cycleStartedObservable = new ManualObservable();
 	private ManualObservable carryBitChangedObservable = new ManualObservable();
 	private ManualObservable cycleFinishedObservable = new ManualObservable();	
+	private ManualObservable clearedObservable = new ManualObservable();
 	
 	public Compost() {
 		// create registers
@@ -94,6 +95,7 @@ public class Compost {
 		cycles = 0;
 		cycleStartedObservable.notifyObservers();
 		setInstructionPointer(ENTRY_POINT);
+		clearedObservable.notifyObservers();
 	}
 	
 	public void initOperation(int address, String mnemonic, List<String> arguments) throws Exception {
@@ -151,6 +153,9 @@ public class Compost {
 	}
 	public Observable getCarryBitChangedObservable() {
 		return carryBitChangedObservable;
+	}
+	public Observable getClearedObservable() {
+		return clearedObservable;
 	}
 	
 	public void setHalt(int address) {

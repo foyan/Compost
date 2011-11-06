@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ch.hszt.kfh.compost.Compost;
 import ch.hszt.kfh.compost.Tools;
-import ch.hszt.kfh.compost.parsing.MnemonicStringParser;
+import ch.hszt.kfh.compost.parsing.MnemonicParser;
 
 public class Uebung5_Aufgabe3Test {
 
@@ -34,7 +34,8 @@ public class Uebung5_Aufgabe3Test {
 		
 		// load program and parameters
 		Compost compost = new Compost();
-		MnemonicStringParser parser = new MnemonicStringParser(TestUtils.readFile("src/main/resources/Uebung5_Aufgabe3.compost"));
+		MnemonicParser parser = new MnemonicParser();
+		parser.setString(TestUtils.readFile("src/main/resources/Uebung5_Aufgabe3.compost"));
 		parser.setCompost(compost);
 		parser.setParamData(200, a);
 		parser.setParamData(202, b);

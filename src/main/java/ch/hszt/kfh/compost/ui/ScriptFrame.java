@@ -13,6 +13,7 @@ import java.io.IOException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -22,7 +23,8 @@ import javax.swing.JTextArea;
 
 import ch.hszt.kfh.compost.Compost;
 import ch.hszt.kfh.compost.Converter;
-import ch.hszt.kfh.compost.parsing.MnemonicStringParser;
+import ch.hszt.kfh.compost.parsing.CompostParser;
+import ch.hszt.kfh.compost.parsing.MnemonicParser;
 import ch.hszt.kfh.compost.ui.formatting.TwoComplementFormatter;
 
 public class ScriptFrame extends JFrame implements ScriptProvider {
@@ -33,6 +35,8 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 			"; [Address:] Mnemonic Argument1[, Argument2]\n\n");
 
 	private String fileName;
+	
+	private ParserBoxModel parserBoxModel = new ParserBoxModel();
 
 	public ScriptFrame() {
 		super();
@@ -68,11 +72,33 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		
 		buttons.add(Box.createHorizontalGlue());
 
-		JButton initButton = new JButton("Init");
-		initButton.addActionListener(Program.instance().getInitFromScript(this));
+		JComboBox parserBox = new JComboBox();
+		parserBox.setModel(parserBoxModel);
+		buttons.add(parserBox);
+		
+		JButton initButton = new JButton("Parse");
+		initButton.addActionListener(getInitFromScript());
 		buttons.add(initButton);
 
 		updateTitle();
+	}
+
+	private ActionListener getInitFromScript() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				CompostParser parser = parserBoxModel.getParser();
+				parser.setString(code.getText());
+				Compost compost = Program.instance().getCompost();
+				parser.setCompost(compost);
+				try {
+					parser.parse();
+					compost.getCycleStartedObservable().notifyObservers();
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.toString());
+				}
+			}
+		};
 	}
 
 	private void updateTitle() {
@@ -143,8 +169,9 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 			Converter conv = new Converter();
 			conv.setDirectAddressing(false);
 			conv.setFormatter(new TwoComplementFormatter());
-			conv.setParser(new MnemonicStringParser(provideScript()));
-			conv.getParser().setCompost(new Compost());
+			CompostParser parser = new MnemonicParser();
+			parser.setString(provideScript());
+			conv.setParser(parser);
 			try {
 				code.setText(conv.convert());
 			} catch (Exception e) {

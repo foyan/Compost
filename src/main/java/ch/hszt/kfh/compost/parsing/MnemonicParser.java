@@ -5,14 +5,8 @@ import java.util.HashMap;
 
 import ch.hszt.kfh.compost.Tools;
 
-public class MnemonicStringParser extends CompostParser {
-	
-	private String string;
-	
-	public MnemonicStringParser(String string) {
-		this.string = string;
-	}
-	
+public class MnemonicParser extends CompostParser {
+		
 	@Override
 	public void parse() throws Exception {
 		
@@ -21,7 +15,7 @@ public class MnemonicStringParser extends CompostParser {
 		int address = 100;
 		HashMap<String, Integer> labels = new HashMap<String, Integer>();
 		
-		for (String l : string.split("\n")) {
+		for (String l : getString().split("\n")) {
 			String line = l;
 			if (line.contains(";")) {
 				line = line.substring(0, line.indexOf(";"));
@@ -137,6 +131,11 @@ public class MnemonicStringParser extends CompostParser {
 		} catch (NumberFormatException e) {
 			return false;
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "Mnemonic";
 	}
 
 }

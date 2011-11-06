@@ -7,8 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import ch.hszt.kfh.compost.Compost;
-import ch.hszt.kfh.compost.parsing.CompostParser;
-import ch.hszt.kfh.compost.parsing.MnemonicStringParser;
 
 public class Program {
 
@@ -93,23 +91,7 @@ public class Program {
 	public ActionListener getShowScript() {
 		return showScript;
 	}
-	
-	public ActionListener getInitFromScript(final ScriptProvider provider) {
-		return new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				CompostParser parser = new MnemonicStringParser(provider.provideScript());
-				parser.setCompost(compost);
-				try {
-					parser.parse();
-					compost.getCycleStartedObservable().notifyObservers();
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.toString());
-				}
-			}
-		};
-	}
-	
+		
 	public ActionListener getStep() {
 		return step;
 	}
