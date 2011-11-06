@@ -26,7 +26,7 @@ public class SLA extends Operation {
 	@Override
 	public void exec(Compost compost, boolean[] argument) throws Exception {
 		MemCell reg = compost.getRegister(RegisterId.ACCUM);
-		compost.setCarryBit(reg.getBit(1));
+		compost.setCarryBit(reg.getBit(1) ^ reg.getBit(0));
 		for (int i = 1; i < reg.getSize()-1; i++) {
 			reg.setBit(i, reg.getBit(i+1));
 		}

@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -114,6 +117,15 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		public void actionPerformed(ActionEvent arg0) {
 			if (fileName == null) {
 				saveAs.actionPerformed(arg0);
+			} else {
+				File f = new File(fileName);
+				try {
+					BufferedWriter w = new BufferedWriter(new FileWriter(f));
+					w.write(code.getText());
+					w.close();
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(null, e.toString());
+				}
 			}
 		}
 	};

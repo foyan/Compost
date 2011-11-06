@@ -9,7 +9,7 @@ public class Tools {
 			r[i] = a[i] ^ b[i] ^ carry;
 			carry = (a[i] && b[i]) || (a[i] && carry) || (b[i] && carry);
 		}
-		return new AdditionResult(r, carry);
+		return new AdditionResult(r, carry && (a[0] == b[0]));
 	}
 	
 	public static int fromComplement(boolean[] data) {

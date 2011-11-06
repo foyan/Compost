@@ -1,0 +1,26 @@
+; Summe = a + 4 * b + 8 * c
+
+; Code
+LWDD R0, 204
+SLA
+SLA
+SLA
+BCD 198
+LWDD R1, 200
+ADD R1
+SWDD R0, 208
+LWDD R0, 202
+SLA
+SLA
+BCD 198
+LWDD R1, 208
+ADD R1
+SWDD R0, 206	
+
+; Error handler
+@198	3328
+
+; Argumente
+@200	-125
+@202	10000
+@204	16
