@@ -161,7 +161,7 @@ public class Compost {
 	public void setHalt(int address) {
 		MemCell cell = getMem(address);
 		try {
-			cell.setBits(Tools.toBooleanArray("00001101"));
+			cell.setBits(Tools.toBooleanArray("00000000"));
 			getMem(address + 1).setBits(Tools.toBooleanArray("00000000"));
 		} catch (Exception e) {
 			e.printStackTrace();

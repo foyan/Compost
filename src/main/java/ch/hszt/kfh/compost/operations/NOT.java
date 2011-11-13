@@ -10,7 +10,7 @@ public class NOT extends Operation {
 
 	@Override
 	protected String opCodeString() {
-		return "00000000xxxxxxxx";
+		return "000000001xxxxxxx";
 	}
 
 	@Override

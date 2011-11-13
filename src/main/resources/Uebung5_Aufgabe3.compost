@@ -18,7 +18,7 @@ ADD R1
 SWDD R0, 206	
 
 ; Error handler
-@198	3328
+; none required => just jump into the void
 
 ; Argumente
 @200	-125

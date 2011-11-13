@@ -91,6 +91,10 @@ public class MnemonicParser extends CompostParser {
 				}
 				
 				String  mnemonic = tokens.get(addressTokenCount).trim();
+				
+				if (mnemonic.equals("END")) {
+					getCompost().setHalt(address);
+				}
 	
 				// arguments
 				ArrayList<String> arguments = new ArrayList<String>();
@@ -114,7 +118,7 @@ public class MnemonicParser extends CompostParser {
 
 		}
 		
-		getCompost().setHalt(address);
+		//getCompost().setHalt(address);
 				
 	}
 	
