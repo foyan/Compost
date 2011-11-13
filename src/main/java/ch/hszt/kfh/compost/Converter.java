@@ -16,6 +16,14 @@ public class Converter implements Observer {
 	private HashMap<Integer, String> result = new HashMap<Integer, String>();
 
 	private Compost compost = new Compost();
+	
+	public Converter() {
+		
+	}
+	
+	public Converter(DataFormatter formatter) {
+		setFormatter(formatter);
+	}
 		
 	public CompostParser getParser() {
 		return parser;
@@ -100,6 +108,11 @@ public class Converter implements Observer {
 		} else if (arg0 == compost.getClearedObservable()) {
 			result.clear();
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return formatter != null ? formatter.getName() : "(Unknown)";
 	}
 
 }

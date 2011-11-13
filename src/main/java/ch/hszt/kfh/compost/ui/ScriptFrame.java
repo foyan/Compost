@@ -24,8 +24,6 @@ import javax.swing.JTextArea;
 import ch.hszt.kfh.compost.Compost;
 import ch.hszt.kfh.compost.Converter;
 import ch.hszt.kfh.compost.parsing.CompostParser;
-import ch.hszt.kfh.compost.parsing.MnemonicParser;
-import ch.hszt.kfh.compost.ui.formatting.TwoComplementFormatter;
 
 public class ScriptFrame extends JFrame implements ScriptProvider {
 
@@ -37,6 +35,7 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 	private String fileName;
 	
 	private ParserBoxModel parserBoxModel = new ParserBoxModel();
+	private ConverterBoxModel converterBoxModel = new ConverterBoxModel();
 
 	public ScriptFrame() {
 		super();
@@ -63,13 +62,7 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		JButton saveAsButton = new JButton("Save as...");
 		saveAsButton.addActionListener(saveAs);
 		buttons.add(saveAsButton);
-		
-		buttons.add(Box.createHorizontalStrut(10));
-		
-		JButton convertToBinaryButton = new JButton("=> bin");
-		convertToBinaryButton.addActionListener(convertToBinary);
-		buttons.add(convertToBinaryButton);
-		
+				
 		buttons.add(Box.createHorizontalGlue());
 
 		JComboBox parserBox = new JComboBox();
@@ -80,6 +73,16 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		initButton.addActionListener(getInitFromScript());
 		buttons.add(initButton);
 
+		buttons.add(Box.createHorizontalStrut(10));
+
+		JComboBox converterBox = new JComboBox();
+		converterBox.setModel(converterBoxModel);
+	    buttons.add(converterBox);
+	    
+	    JButton convButton = new JButton("Convert");
+	    convButton.addActionListener(convert);
+	    buttons.add(convButton);
+		
 		updateTitle();
 	}
 
@@ -163,13 +166,12 @@ public class ScriptFrame extends JFrame implements ScriptProvider {
 		}
 	};
 	
-	private ActionListener convertToBinary = new ActionListener() {
+	private ActionListener convert = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			Converter conv = new Converter();
+			Converter conv = converterBoxModel.getConverter();
 			conv.setDirectAddressing(false);
-			conv.setFormatter(new TwoComplementFormatter());
-			CompostParser parser = new MnemonicParser();
+			CompostParser parser = parserBoxModel.getParser();
 			parser.setString(provideScript());
 			conv.setParser(parser);
 			try {

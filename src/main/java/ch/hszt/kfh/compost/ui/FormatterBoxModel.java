@@ -65,6 +65,10 @@ public class FormatterBoxModel implements ComboBoxModel {
 		return formatter;
 	}
 	
+	public List<DataFormatter> getFormatters() {
+		return formatters;
+	}
+	
 	public Observable getChangedObservable() {
 		return changedObservable;
 	}
