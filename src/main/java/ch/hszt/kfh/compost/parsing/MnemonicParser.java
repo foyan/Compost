@@ -6,7 +6,7 @@ import java.util.HashMap;
 import ch.hszt.kfh.compost.Tools;
 
 public class MnemonicParser extends CompostParser {
-		
+			
 	@Override
 	public void parse() throws Exception {
 		
@@ -34,6 +34,27 @@ public class MnemonicParser extends CompostParser {
 					throw new Exception("Label \"" + label + "\" already defined.");
 				}
 				labels.put(label, address);
+				continue;
+			}
+			address = address + 2;
+		}
+		
+		address = 100;
+		
+		for (String l : getString().split("\n")) {
+			String line = l;
+			if (line.contains(";")) {
+				line = line.substring(0, line.indexOf(";"));
+			}
+			line = line.trim();
+			
+			// nothing
+			if (line.isEmpty()) {
+				continue;
+			}
+			
+			// label
+			if (line.endsWith(":")) {
 				continue;
 			}
 						

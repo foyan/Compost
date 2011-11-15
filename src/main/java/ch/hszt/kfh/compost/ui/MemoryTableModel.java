@@ -45,7 +45,7 @@ public class MemoryTableModel extends AbstractTableModel implements Observer {
 		int address = row * 4 * 2 + (col - 1) * 2;
 		MemCell cell1 = Program.instance().getCompost().getMem(address);
 		MemCell cell2 = Program.instance().getCompost().getMem(address + 1);
-		return formatterBoxModel.getFormatter().format(cell1.getBits(), cell2.getBits(), address >= 200);
+		return formatterBoxModel.getFormatter().format(cell1.getBits(), cell2.getBits(), address >= 500);
 	}
 	
 	@Override

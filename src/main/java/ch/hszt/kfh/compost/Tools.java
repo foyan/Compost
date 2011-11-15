@@ -42,6 +42,23 @@ public class Tools {
 		return fromComplement(b);
 	}
 	
+	public static int fromComplement(boolean[] b1, boolean[] b2, boolean[] b3, boolean[] b4) {
+		boolean[] b = new boolean[b1.length + b2.length + b3.length + b4.length];
+		for (int i = 0; i < b1.length; i++) {
+			b[i] = b1[i];
+		}
+		for (int i = 0; i < b2.length; i++) {
+			b[i + b1.length] = b2[i];
+		}
+		for (int  i = 0; i < b3.length; i++) {
+			b[i + b1.length + b2.length] = b3[i];
+		}
+		for (int i = 0; i < b4.length; i++) {
+			b[i + b1.length + b2.length + b3.length] = b4[i];
+		}
+		return fromComplement(b);
+	}
+
 	public static int fromBinary(boolean[] data) {
 		int n = 0;
 		for (int i = 0; i < data.length; i++) {

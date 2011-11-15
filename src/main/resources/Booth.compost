@@ -1,0 +1,120 @@
+; r1      r2      r3
+; 0000 0000 1100 0
+; 0000 0000 0110 0
+; 0000 0000 0011 0
+; 1110 0000 0011 0
+; 1111 0000 0001 1
+; 1111 1000 1100 1
+
+; trivial checks
+LWDD R0 #500
+BZD done
+LWDD R0 #502
+BZD done
+
+LWDD R3 #520
+LWDD R2 #522
+
+LWDD R0 #500
+SWDD R0 #508
+
+startLoop:
+LWDD R0 #510 ; check lsb
+BZD lsbZero
+
+LWDD R0 #508 ; check lsb-1
+AND R2
+BZD addition
+BD shift3
+
+lsbZero:
+
+LWDD R0 #508 : check lsb-1
+AND R2
+BNZD subtraction
+BD shift3
+
+subtraction:
+LWDD R0 #502
+NOT
+ADDD 1
+LWDD R1 #504
+ADD R1
+SWDD R0 #504
+
+BD shift3
+
+addition:
+LWDD R0 #502
+LWDD R1 #504
+ADD R1
+SWDD R0 #504
+
+
+
+
+shift3:
+LWDD R0 #508
+SRL
+BCD orR4
+SWDD R0 #508
+LWDD R0 #0
+SWDD R0 #510
+BD shift2
+
+orR4:
+SWDD R0 #508
+LWDD R0 #510
+OR R3
+SWDD R0 #510
+
+shift2:
+LWDD R0 #506
+SRL
+BCD orR3
+SWDD R0 #506
+BD shift1
+
+orR3:
+SWDD R0 #506
+LWDD R0 #508
+OR R3
+SWDD R0 #508
+
+shift1:
+LWDD R0 #504
+SRA
+BCD orR2
+SWDD R0 #504
+BD loopEnd
+
+orR2:
+SWDD R0 #504
+LWDD R0 #506
+OR R3
+SWDD R0 #506
+
+BD loopEnd
+
+loopEnd:
+
+LWDD R0 #512
+DEC
+BZD done
+SWDD R0 #512
+
+BD startLoop
+
+done:
+
+@500 1234
+@502 0
+
+@504 0 ; r1
+@506 0 ; r2
+@508 0 ; r3
+@510 0 ; r4
+@512 16 ; number length
+
+@520 -32768 ; msb bitmask
+@522 1 lsb bitmask
